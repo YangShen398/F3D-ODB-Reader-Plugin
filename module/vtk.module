@@ -1,0 +1,8 @@
+NAME
+  F3D::AbaqusODBReader
+DESCRIPTION
+  A VTK module containing a plugin for F3D to read Abaqus ODB file
+DEPENDS
+  VTK::CommonCore
+  VTK::CommonExecutionModel
+  VTK::IOImport
