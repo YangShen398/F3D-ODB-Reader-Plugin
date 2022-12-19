@@ -110,33 +110,34 @@ int vtkF3DODBReader::RequestData(
     this->CellsNum = 0;
     for (instIter.first(); !instIter.isDone(); instIter.next())
     {
+      std::cout << instIter.currentKey().cStr() << std::endl;
       auto instName = instIter.currentKey();
       auto nodes = instIter.currentValue().nodes();
       auto cells = instIter.currentValue().elements();
 
       // instantiate two maps from abaqus label (label - 1 because label starts from 1) to vtk index
-      NodesMap[instName] = std::vector<vtkIdType>(nodes.size(), 0);
-      CellsMap[instName] = std::vector<vtkIdType>(cells.size(), 0);
+      this->NodesMap[instName] = std::vector<vtkIdType>(nodes.size(), 0);
+      this->CellsMap[instName] = std::vector<vtkIdType>(cells.size(), 0);
       this->NodesNum += nodes.size();
       this->CellsNum += cells.size();
       // insert nodes to vtkPoints and put global index in the map
       for (int i = 0; i < nodes.size(); i++) 
       {
-        NodesMap[instName][i] = points->InsertNextPoint(nodes[i].coordinates());
+        this->NodesMap[instName][i] = points->InsertNextPoint(nodes[i].coordinates());
       }
       // insert cell to vtkCellArray and put global index in the map
       for (int i = 0; i < cells.size(); i++)
       {
         auto cellType = ABAQUS_VTK_CELL_MAP(cells[i].type().CStr());
-        int numOfNodesInCell = 0;
-        const int* conn = cells[i].connectivity(numOfNodesInCell);
+        auto conn = cells[i].connectivity();
+        int numOfNodesInCell = conn.Length();
         vtkIdType* ids = new vtkIdType[numOfNodesInCell];
         for (int id = 0; id < numOfNodesInCell; id++) 
         {
           // conn[id] is the node label which starts from 1
-          ids[id] = conn[id] - 1;
+          ids[id] = this->NodesMap[instName][conn[id] - 1];
         }
-        CellsMap[instName][i] = cellArray->InsertNextCell(numOfNodesInCell, ids);
+        this->CellsMap[instName][i] = cellArray->InsertNextCell(numOfNodesInCell, ids);
         cellTypes.push_back(cellType);
         delete [] ids;
       }
@@ -207,7 +208,7 @@ void vtkF3DODBReader::FillDataArray(vtkUnstructuredGrid* ug, const odb_FieldOutp
         }
       }     
     }
-    this->AddPointDataByType(ug, dataArray, fieldOutput.type());
+    ug->GetPointData()->AddArray(dataArray);
   }
   else if (abqPos == odb_Enum::odb_ResultPositionEnum::INTEGRATION_POINT)
   {
@@ -236,48 +237,6 @@ void vtkF3DODBReader::FillDataArray(vtkUnstructuredGrid* ug, const odb_FieldOutp
         }
       }     
     }
-    this->AddCellDataByType(ug, dataArray, fieldOutput.type());    
+    ug->GetCellData()->AddArray(dataArray);
   }
-}
-
-void vtkF3DODBReader::AddPointDataByType(vtkUnstructuredGrid* ug, vtkDoubleArray* dataArray, int type)
-{
-  ug->GetPointData()->AddArray(dataArray);
-  // if (type == odb_Enum::odb_DataTypeEnum::SCALAR)
-  // {
-  //   ug->GetPointData()->SetScalars(dataArray);
-  // }
-  // else if (type == odb_Enum::odb_DataTypeEnum::VECTOR)
-  // {
-  //   ug->GetPointData()->SetVectors(dataArray);
-  // }
-  // else if (type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_FULL ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_SURFACE ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_PLANAR ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_2D_SURFACE ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_2D_PLANAR)
-  // {
-  //   ug->GetPointData()->SetTensors(dataArray);
-  // }
-}
-
-void vtkF3DODBReader::AddCellDataByType(vtkUnstructuredGrid* ug, vtkDoubleArray* dataArray, int type)
-{
-  ug->GetCellData()->AddArray(dataArray);
-  // if (type == odb_Enum::odb_DataTypeEnum::SCALAR)
-  // {
-  //   ug->GetCellData()->SetScalars(dataArray);
-  // }
-  // else if (type == odb_Enum::odb_DataTypeEnum::VECTOR)
-  // {
-  //   ug->GetCellData()->SetVectors(dataArray);
-  // }
-  // else if (type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_FULL ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_SURFACE ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_3D_PLANAR ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_2D_SURFACE ||
-  //   type == odb_Enum::odb_DataTypeEnum::TENSOR_2D_PLANAR)
-  // {
-  //   ug->GetCellData()->SetTensors(dataArray);
-  // }
 }

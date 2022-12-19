@@ -31,18 +31,3 @@ f3d_plugin_build(
   DESCRIPTION "Abaqus ODB reader plugin"
   VTK_MODULES CommonCore CommonExecutionModel
 )
-
-# if(BUILD_TESTING)
-#   enable_testing()
-#   add_test(NAME TestPluginExample
-#           COMMAND "$<TARGET_FILE:f3d::f3d>"
-#                   "--dry-run"
-#                   "--no-render"
-#                   "--load-plugins=$<TARGET_FILE:f3d-plugin-example>"
-#                   "${CMAKE_CURRENT_SOURCE_DIR}/data.expl"
-#   )
-
-#   set_tests_properties(TestPluginExample PROPERTIES
-#     PASS_REGULAR_EXPRESSION "Number of points: 3"
-#   )
-# endif()

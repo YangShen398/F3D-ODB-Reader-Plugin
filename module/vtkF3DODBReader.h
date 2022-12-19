@@ -34,10 +34,6 @@ protected:
 
   void FillDataArray(vtkUnstructuredGrid* ug, const odb_FieldOutput& fieldOutput, const odb_Odb& odb);
 
-  void AddPointDataByType(vtkUnstructuredGrid* ug, vtkDoubleArray* dataArray, int type);
-
-  void AddCellDataByType(vtkUnstructuredGrid* ug, vtkDoubleArray* dataArray, int type);
-
 private:
   vtkF3DODBReader(const vtkF3DODBReader&) = delete;
   void operator=(const vtkF3DODBReader&) = delete;
