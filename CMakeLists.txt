@@ -31,3 +31,9 @@ f3d_plugin_build(
   DESCRIPTION "Abaqus ODB reader plugin"
   VTK_MODULES CommonCore CommonExecutionModel
 )
+
+option(BUILD_TESTING "Build the tests" OFF)
+if(BUILD_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+endif()

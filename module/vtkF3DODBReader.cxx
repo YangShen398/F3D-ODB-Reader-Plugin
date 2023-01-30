@@ -95,7 +95,7 @@ int vtkF3DODBReader::RequestData(
   
   try {
 
-    // vtkPolyData is the VTK class of surfacic mesh
+    // vtkPolyData is the VTK class of surface mesh
     // Other data structure exists for volumetric mesh like vtkImageData or vtkUnstructuredGrid
     vtkUnstructuredGrid* output = vtkUnstructuredGrid::GetData(outputVector);
     vtkNew<vtkPoints> points;
