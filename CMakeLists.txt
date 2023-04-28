@@ -6,12 +6,6 @@ include(GNUInstallDirs)
 
 find_package(f3d REQUIRED)
 
-# Check Plugin SDK is available
-if(NOT (DEFINED f3d_SDK_PLUGIN AND ${f3d_SDK_PLUGIN}))
-  message(FATAL_ERROR "f3d_SDK_PLUGIN is not enabled, can't configure plugin")
-endif()
-message(STATUS "f3d_SDK_PLUGIN is enabled")
-
 # find Abaqus SDK
 list(INSERT CMAKE_MODULE_PATH 0
 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
