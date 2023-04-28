@@ -1,0 +1,7 @@
+{
+  "cmake.generator": "Ninja",
+  "cmake.configureSettings": {
+    "VTK_DIR": "C:/Users/yang/Dev/VTK_Install/lib/cmake/vtk-9.2",
+    "BUILD_TESTING": "ON"
+  }
+}

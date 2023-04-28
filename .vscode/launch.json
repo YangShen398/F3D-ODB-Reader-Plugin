@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "(Windows) Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "C:/Users/yang/Dev/f3d/build/RelWithDebInfo/bin/f3d.exe",
+      "args": [
+        "--load-plugins",
+        "../build/f3d-plugin-ODBReader.dll",
+        "../doc/odbFiles/multi_alternet_check.odb"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "console": "externalTerminal"
+    }
+  ]
+}

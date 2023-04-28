@@ -2,13 +2,15 @@
 
 This project builds a plugin to read ODB files from Abaqus for F3D. See [this Github site](https://github.com/f3d-app/f3d) for more information about F3D.
 
+![Visualization in F3D and Abaqus](doc/L-bracket.png)
+
 # Build
 
 F3D, VTK, and Abaqus SDK are required dependencies to build this project. Follow the instructions from the official sites to build and install [F3D](https://github.com/f3d-app/f3d) and [VTK](https://github.com/Kitware/VTK). Abaqus C++ SDK comes with the installation of Abaqus. This project is built with CMake.
 
 ~~To configure the project using CMake, a CMake variable `AbqSDK_PRIVATE_INCLUDE_DIR` must be defined to let CMake know where to find Abaqus C++ SDK. `AbqSDK_PRIVATE_INCLUDE_DIR`, on my machine for example, is given as `C:/Program Files/Dassault Systemes/SimulationServices/V6R2019x/win_b64/code/include;C:/Program Files/Dassault Systemes/SimulationServices/V6R2019x`. Once the configuration is successful, meaning F3D, VTK, and Abaqus C++ SDK are found, you can build the project to generate the dynamic library.~~
 Setting `AbqSDK_PRIVATE_INCLUDE_DIR` is no longer required. If Abaqus is installed, CMake should be able to find the include path of Abaqus SDK.
-To build the project,
+To build the project
 
 ```
 mkdir build
